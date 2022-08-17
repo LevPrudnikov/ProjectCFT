@@ -13,19 +13,14 @@ public class FileParser {
     public List<String> parseFile(File file) {
         List<String> strings = new ArrayList<>();
 
-        if (file != null && file.exists()) {
-            try {
-                Scanner sc = new Scanner(file);
-                while (sc.hasNext()) {
-                    String str = sc.nextLine();
-                    logger.info(str);
-                    strings.add(str);
-                }
-            } catch (Exception ex) {
-                logger.error("Возникла ошибка при парсинге файла", ex);
+        try (Scanner sc = new Scanner(file)) {
+            while (sc.hasNext()) {
+                String str = sc.nextLine();
+                logger.info(str);
+                strings.add(str);
             }
-        } else {
-            logger.error("Файла " + file.getName() + " не существует!");
+        } catch (Exception ex) {
+            logger.error("Возникла ошибка при парсинге файла", ex);
         }
 
         return strings;
